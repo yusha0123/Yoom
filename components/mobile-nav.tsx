@@ -18,7 +18,7 @@ const MobileNav = () => {
   const pathname = usePathname();
 
   return (
-    <section className="w-full max-w-64">
+    <section className="w-full">
       <Sheet>
         <SheetTrigger asChild>
           <Button size={"icon"} className="sm:hidden">
@@ -26,18 +26,18 @@ const MobileNav = () => {
           </Button>
         </SheetTrigger>
         <SheetContent className="border-none bg-dark-1">
-          <Link href="/" className="flex items-center gap-1">
+          <Link href="/" className="flex items-center mx-auto gap-1 w-fit">
             <Image
               src="/icons/logo.svg"
               width={32}
               height={32}
               alt="yoom logo"
             />
-            <p className="text-[26px] font-extrabold text-white">YOOM</p>
+            <p className="text-[20px] font-extrabold text-white">YOOM</p>
           </Link>
           <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
             <SheetClose asChild>
-              <section className="flex h-full flex-col gap-6 pt-16 text-white">
+              <section className="flex h-full items-center flex-col gap-6 pt-16 text-white">
                 {sidebarLinks.map((item) => {
                   const isActive = pathname === item.route;
 
