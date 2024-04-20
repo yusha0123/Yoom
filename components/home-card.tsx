@@ -1,21 +1,15 @@
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { LucideIcon } from "lucide-react";
 
 type Props = {
-  imgSrc: string;
+  Icon: LucideIcon;
   title: string;
   description: string;
   className?: string;
   onClick: () => void;
 };
 
-const HomeCard = ({
-  imgSrc,
-  title,
-  description,
-  onClick,
-  className,
-}: Props) => {
+const HomeCard = ({ Icon, title, description, onClick, className }: Props) => {
   return (
     <div
       className={cn(
@@ -24,8 +18,8 @@ const HomeCard = ({
       )}
       onClick={onClick}
     >
-      <div className="flex justify-center items-center glassmorphism size-12 rounded-sm">
-        <Image src={imgSrc} width={27} height={27} alt={title} />
+      <div className="flex justify-center items-center glassmorphism size-12 rounded">
+        <Icon className="size-6" />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">{title}</h2>

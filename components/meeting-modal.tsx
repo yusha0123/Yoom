@@ -1,5 +1,6 @@
 type Props = {
   isOpen: boolean;
+  isLoading?: boolean;
   onClose: () => void;
   handleClick: () => void;
   title: string;
@@ -13,7 +14,7 @@ type Props = {
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import { Button } from "./ui/button";
 
 const MeetingModal = ({
@@ -26,6 +27,7 @@ const MeetingModal = ({
   buttonIcon,
   children,
   image,
+  isLoading,
 }: Props) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -45,6 +47,7 @@ const MeetingModal = ({
               "bg-blue-1 hover:bg-blue-1/75 transition duration-300 focus-visible:ring-0 focus-visible:ring-offset-0"
             }
             onClick={handleClick}
+            isLoading={isLoading}
           >
             {buttonIcon && (
               <Image
@@ -63,4 +66,4 @@ const MeetingModal = ({
   );
 };
 
-export default MeetingModal;
+export default memo(MeetingModal);

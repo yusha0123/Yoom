@@ -12,11 +12,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-dark-3 rounded-lg;
+  @apply bg-[#496989] rounded-lg;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #677387;
+  background-color: #98a1b1;
   border-radius: 10px;
 }
 
