@@ -21,7 +21,7 @@ const MobileNav = () => {
     <section className="w-full">
       <Sheet>
         <SheetTrigger asChild>
-          <Button size={"icon"} className="sm:hidden">
+          <Button size={"icon"} className="sm:hidden text-white">
             <Menu />
           </Button>
         </SheetTrigger>
