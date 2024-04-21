@@ -1,13 +1,8 @@
-import Image from "next/image";
+import { PulseLoader } from "react-spinners";
 
 const Loader = () => (
   <div className="fixed inset-0 flex items-center justify-center">
-    <Image
-      src={"/icons/loading-circle.svg"}
-      alt="loading-circle"
-      width={50}
-      height={50}
-    />
+    <PulseLoader color="#FFFFFF" />
   </div>
 );
 
