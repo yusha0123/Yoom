@@ -21,7 +21,7 @@ const StreamClientProvider = ({ children }: { children: ReactNode }) => {
       apiKey: API_KEY,
       user: {
         id: user?.id,
-        name: user?.username || user?.id,
+        name: `${user?.firstName} ${user?.lastName}` || user?.id,
         image: user?.imageUrl,
       },
       tokenProvider,

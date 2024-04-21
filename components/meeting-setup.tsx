@@ -1,9 +1,20 @@
 "use client";
 
-import { useCall, VideoPreview } from "@stream-io/video-react-sdk";
+import {
+  DeviceSettings,
+  useCall,
+  VideoPreview,
+} from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
 
-const MeetingSetup = () => {
+const MeetingSetup = ({
+  setIsSetupComplete,
+}: {
+  setIsSetupComplete: (value: boolean) => void;
+}) => {
   const [isMicCamToggled, setisMicCamToggled] = useState(false);
   const call = useCall();
 
@@ -24,9 +35,31 @@ const MeetingSetup = () => {
   }, [isMicCamToggled, call?.camera, call?.microphone]);
 
   return (
-    <div className="flex h-[100dvh] w-full flex-col items-center justify-center gap-3 text-white p-2">
+    <div className="flex min-h-[100dvh] w-full flex-col items-center justify-center gap-3 text-white p-2">
       <h2 className="text-2xl font-bold">Setup</h2>
-      <VideoPreview />
+      <div className="max-w-2xl max-h-[70%] mx-auto">
+        <VideoPreview />
+      </div>
+      <div className="flex h-16 items-center justify-center gap-3">
+        <div className="flex items-center space-x-4">
+          <Switch
+            id="toggle"
+            className="bg-gray-500"
+            checked={isMicCamToggled}
+            onCheckedChange={(e) => setisMicCamToggled(e.valueOf())}
+          />
+          <Label htmlFor="toggle">Join with mic and camera off</Label>
+        </div>
+        <DeviceSettings />
+      </div>
+      <Button
+        onClick={() => {
+          call.join();
+          setIsSetupComplete(true);
+        }}
+      >
+        Join meeting
+      </Button>
     </div>
   );
 };

@@ -42,13 +42,7 @@ const MeetingModal = ({
             {title}
           </h1>
           {children}
-          <Button
-            className={
-              "bg-blue-1 hover:bg-blue-1/75 transition duration-300 focus-visible:ring-0 focus-visible:ring-offset-0"
-            }
-            onClick={handleClick}
-            isLoading={isLoading}
-          >
+          <Button onClick={handleClick} isLoading={isLoading}>
             {buttonIcon && (
               <Image
                 src={buttonIcon}
