@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
+import ModalProvider from "@/providers/modal-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,6 +42,7 @@ export default function RootLayout({
         <body className={cn(inter.className, "bg-dark-2")}>
           {children}
           <Toaster />
+          <ModalProvider />
         </body>
       </html>
     </ClerkProvider>
