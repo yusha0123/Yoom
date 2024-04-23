@@ -1,8 +1,8 @@
 "use client";
 
+import { Check, Copy } from "lucide-react";
 import Image from "next/image";
-import { Copy } from "lucide-react";
-import { toast } from "sonner";
+import { useState } from "react";
 import { Button } from "./ui/button";
 
 interface MeetingCardProps {
@@ -26,6 +26,17 @@ const MeetingCard = ({
   link,
   buttonText,
 }: MeetingCardProps) => {
+  const [copied, setCopied] = useState(false);
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
   return (
     <section className="flex min-h-64 w-full flex-col justify-between rounded-xl bg-dark-1 px-5 py-8 xl:max-w-xl">
       <article className="flex flex-col gap-5">
@@ -54,15 +65,18 @@ const MeetingCard = ({
               )}
               {buttonText}
             </Button>
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(link);
-                toast.success("link Copied to clipboard!");
-              }}
-              variant={"secondary"}
-            >
-              <Copy className="h-4 w-4 mr-2" />
-              Copy Link
+            <Button onClick={onCopy} variant={"secondary"} disabled={copied}>
+              {!copied ? (
+                <>
+                  <Copy className="size-4 mr-2" />
+                  Copy Link
+                </>
+              ) : (
+                <>
+                  <Check className="size-4 mr-2" />
+                  Copied!
+                </>
+              )}
             </Button>
           </div>
         )}

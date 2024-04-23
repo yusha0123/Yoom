@@ -1,3 +1,5 @@
+"use client";
+
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import useModalStore from "@/hooks/useModalStore";
 import { Button } from "@/components/ui/button";
