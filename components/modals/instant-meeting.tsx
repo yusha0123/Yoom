@@ -30,6 +30,7 @@ const InstantMeeting = () => {
           },
         },
       });
+      onClose();
       router.push(`/meeting/${call.id}`);
       toast.success("Meeting Created Successfully!");
     } catch (error) {
