@@ -1,28 +1,31 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import useModalStore from "@/hooks/useModalStore";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
-import { toast } from "sonner";
-import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-import { useStreamVideoClient } from "@stream-io/video-react-sdk";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
-import { Copy } from "lucide-react";
+import useModalStore from "@/hooks/useModalStore";
+import useOrigin from "@/hooks/useOrigin";
+import { useUser } from "@clerk/nextjs";
+import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
+import { Check, Copy } from "lucide-react";
+import DatePicker from "react-datepicker";
+import { toast } from "sonner";
 
 const ScheduleMeeting = () => {
   const { isOpen, type, onClose } = useModalStore();
-  const [loading, setLoading] = useState(false);
   const client = useStreamVideoClient();
+  const origin = useOrigin();
   const { user } = useUser();
-  const [isMeetingScheduled, setisMeetingScheduled] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [callDetail, setCallDetail] = useState<Call>();
   const [values, setValues] = useState({
     dateTime: new Date(),
     description: "",
-    link: "",
   });
+
+  const meetingLink = `${origin}/meeting/${callDetail?.id}`;
 
   const handleClick = async () => {
     if (!client || !user) return;
@@ -39,7 +42,7 @@ const ScheduleMeeting = () => {
           },
         },
       });
-      setisMeetingScheduled(true);
+      setCallDetail(call);
     } catch (error) {
       console.error(error);
       toast.error("Failed to create Meeting!");
@@ -48,10 +51,33 @@ const ScheduleMeeting = () => {
     }
   };
 
+  const onCopy = () => {
+    navigator.clipboard.writeText(meetingLink);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
+  const handleClose = () => {
+    onClose();
+    setCallDetail(undefined);
+    setLoading(false);
+    setCopied(false);
+    setValues({
+      dateTime: new Date(),
+      description: "",
+    });
+  };
+
   return (
-    <Dialog open={isOpen && type === "schedule-meeting"} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen && type === "schedule-meeting"}
+      onOpenChange={handleClose}
+    >
       <DialogContent className="flex w-full max-w-lg flex-col gap-6 border-none bg-dark-1 px-6 py-9 text-white">
-        {isMeetingScheduled ? (
+        {callDetail ? (
           <div className="flex flex-col gap-6">
             <div className="flex justify-center">
               <Image
@@ -64,9 +90,24 @@ const ScheduleMeeting = () => {
             <h2 className="text-3xl font-bold leading-[42px] text-center">
               Meeting Scheduled
             </h2>
-            <Button>
-              Copy invitation link <Copy className="w-4 h-4 ml-2" />
-            </Button>
+            <div className="flex items-center">
+              <input
+                className="flex-1 px-2 text-xs rounded-l-md h-8 bg-dark-3 truncate outline-none"
+                value={meetingLink}
+                readOnly
+              />
+              <Button
+                onClick={onCopy}
+                disabled={copied}
+                className="h-8 rounded-l-none"
+              >
+                {copied ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col gap-6">
