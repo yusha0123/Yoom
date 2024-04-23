@@ -3,7 +3,7 @@ import StreamClientProvider from "@/providers/stream-client-provider";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main>
+    <main className="size-full">
       <StreamClientProvider>
         {children}
         <ModalProvider />
