@@ -1,5 +1,4 @@
 import CallList from "@/components/call-list";
-import React from "react";
 
 const UpComingPage = () => {
   return (

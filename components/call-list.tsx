@@ -1,11 +1,13 @@
 "use client";
 
 import useGetCalls from "@/hooks/useGetCalls";
-import { Call, CallRecording } from "@stream-io/video-react-sdk";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Loader from "./loader";
 import useOrigin from "@/hooks/useOrigin";
+import { Call, CallRecording } from "@stream-io/video-react-sdk";
+import { Play } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useLayoutEffect, useState } from "react";
+import { toast } from "sonner";
+import Loader from "./loader";
 import MeetingCard from "./meeting-card";
 
 type Props = {
@@ -16,8 +18,18 @@ const CallList = ({ type }: Props) => {
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } =
     useGetCalls();
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
   const origin = useOrigin();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
+  const [loading, setLoading] = useState(false); //Loading state for recordings
 
   const getCalls = () => {
     switch (type) {
@@ -45,7 +57,30 @@ const CallList = ({ type }: Props) => {
     }
   };
 
-  if (isLoading) return <Loader />;
+  useLayoutEffect(() => {
+    const fetchRecordings = async () => {
+      try {
+        setLoading(true);
+        const callData = await Promise.all(
+          callRecordings?.map((meeting) => meeting.queryRecordings()) ?? []
+        );
+
+        const recordings = callData
+          .filter((call) => call.recordings.length > 0)
+          .flatMap((call) => call.recordings);
+
+        setRecordings(recordings);
+      } catch (error) {
+        toast.error("Please try again later!");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (type === "Recordings") fetchRecordings();
+  }, [type, callRecordings]);
+
+  if (isLoading || loading) return <Loader />;
 
   const calls = getCalls();
   const noCallsMessage = getNoCallsMessage();
@@ -55,7 +90,7 @@ const CallList = ({ type }: Props) => {
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => (
           <MeetingCard
-            key={(meeting as Call).id}
+            key={(meeting as Call).id || crypto.randomUUID()}
             icon={
               type === "Ended"
                 ? "/icons/previous.svg"
@@ -65,12 +100,12 @@ const CallList = ({ type }: Props) => {
             }
             title={
               (meeting as Call).state?.custom?.description ||
-              (meeting as CallRecording).filename?.substring(0, 20) ||
+              (meeting as CallRecording).filename ||
               "No Description"
             }
             date={
-              (meeting as Call).state?.startsAt?.toLocaleString() ||
-              (meeting as CallRecording).start_time?.toLocaleString()
+              (meeting as Call).state?.startsAt ||
+              (meeting as CallRecording).start_time
             }
             isPreviousMeeting={type === "Ended"}
             link={
@@ -78,17 +113,17 @@ const CallList = ({ type }: Props) => {
                 ? (meeting as CallRecording).url
                 : `${origin}/meeting/${(meeting as Call).id}`
             }
-            buttonIcon1={type === "Recordings" ? "/icons/play.svg" : undefined}
+            ButtonIcon={type === "Recordings" ? Play : undefined}
             buttonText={type === "Recordings" ? "Play" : "Start"}
             handleClick={
               type === "Recordings"
-                ? () => router.push(`${(meeting as CallRecording).url}`)
+                ? () => router.push((meeting as CallRecording).url)
                 : () => router.push(`/meeting/${(meeting as Call).id}`)
             }
           />
         ))
       ) : (
-        <h2 className="text-2xl font-bold text-white">{noCallsMessage}</h2>
+        <h3 className="text-2xl font-bold text-white">{noCallsMessage}</h3>
       )}
     </div>
   );
