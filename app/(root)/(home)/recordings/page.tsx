@@ -1,4 +1,5 @@
 import CallList from "@/components/call-list";
+import { CallRecordingList } from "@stream-io/video-react-sdk";
 
 const RecordingsPage = () => {
   return (

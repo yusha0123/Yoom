@@ -44,10 +44,9 @@ const ScheduleMeeting = () => {
           },
         },
       });
-      toast.success("Meeting created successfully!");
+      toast.success("Meeting scheduled successfully!");
       setCallDetail(call);
     } catch (error) {
-      console.error(error);
       toast.error("Failed to create Meeting!");
     } finally {
       setLoading(false);

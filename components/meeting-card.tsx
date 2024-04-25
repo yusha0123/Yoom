@@ -8,7 +8,7 @@ import { format } from "date-fns";
 
 interface MeetingCardProps {
   title: string;
-  date: Date | string;
+  date: string;
   icon: string;
   isPreviousMeeting?: boolean;
   ButtonIcon?: LucideIcon;
@@ -29,10 +29,7 @@ const MeetingCard = ({
 }: MeetingCardProps) => {
   const [copied, setCopied] = useState(false);
 
-  const meetingDate =
-    typeof date === "string"
-      ? format(new Date(date), "yyyy/MM/dd h:mm a")
-      : format(new Date(date), "yyyy/MM/dd h:mm a");
+  const meetingDate = format(new Date(date), "yyyy/MM/dd h:mm a");
 
   const onCopy = () => {
     navigator.clipboard.writeText(link);

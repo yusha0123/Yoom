@@ -18,18 +18,9 @@ const CallList = ({ type }: Props) => {
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } =
     useGetCalls();
-  const options = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true,
-  };
   const origin = useOrigin();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
-  const [loading, setLoading] = useState(false); //Loading state for recordings
+  const [loadingRecordings, setLoadingRecordings] = useState(false);
 
   const getCalls = () => {
     switch (type) {
@@ -60,7 +51,7 @@ const CallList = ({ type }: Props) => {
   useLayoutEffect(() => {
     const fetchRecordings = async () => {
       try {
-        setLoading(true);
+        setLoadingRecordings(true);
         const callData = await Promise.all(
           callRecordings?.map((meeting) => meeting.queryRecordings()) ?? []
         );
@@ -73,14 +64,16 @@ const CallList = ({ type }: Props) => {
       } catch (error) {
         toast.error("Please try again later!");
       } finally {
-        setLoading(false);
+        setLoadingRecordings(false);
       }
     };
 
     if (type === "Recordings") fetchRecordings();
   }, [type, callRecordings]);
 
-  if (isLoading || loading) return <Loader />;
+  if (isLoading || loadingRecordings) {
+    return <Loader />;
+  }
 
   const calls = getCalls();
   const noCallsMessage = getNoCallsMessage();
@@ -104,7 +97,7 @@ const CallList = ({ type }: Props) => {
               "No Description"
             }
             date={
-              (meeting as Call).state?.startsAt ||
+              (meeting as Call).state?.startsAt?.toLocaleString() ||
               (meeting as CallRecording).start_time
             }
             isPreviousMeeting={type === "Ended"}
