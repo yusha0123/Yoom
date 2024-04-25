@@ -16,7 +16,7 @@ const MeetingIdPage = ({ params: { id } }: { params: { id: string } }) => {
   if (isCallLoading || !isLoaded) return <Loader />;
 
   return (
-    <main className="h-[100dvh] w-full">
+    <main className="min-h-[100dvh] w-full">
       <StreamCall call={call}>
         <StreamTheme>
           {isSetupComplete ? (

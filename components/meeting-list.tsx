@@ -22,7 +22,7 @@ const MeetingList = () => {
         Icon={UserPlus}
         title="Join Meeting"
         description="Via invitation link"
-        onClick={() => {}}
+        onClick={() => onOpen("join-meeting")}
         className="bg-blue-1"
       />
       <HomeCard

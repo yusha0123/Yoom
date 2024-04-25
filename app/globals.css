@@ -54,7 +54,9 @@ body,
 }
 
 .str-video__speaker-layout__wrapper {
-  max-height: 700px;
+  max-height: 80vh;
+  border-radius: 10px;
+  margin-bottom: auto;
 }
 
 .str-video__participant-details {

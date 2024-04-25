@@ -1,6 +1,7 @@
 "use client";
 
 import InstantMeeting from "@/components/modals/instant-meeting";
+import JoinMeeting from "@/components/modals/join-meeting";
 import ScheduleMeeting from "@/components/modals/schedule-meeting";
 import { useEffect, useState } from "react";
 
@@ -17,6 +18,7 @@ const ModalProvider = () => {
     <>
       <InstantMeeting />
       <ScheduleMeeting />
+      <JoinMeeting />
     </>
   );
 };

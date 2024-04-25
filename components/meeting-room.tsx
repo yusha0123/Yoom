@@ -35,7 +35,12 @@ const MeetingRoom = () => {
 
   const callingState = useCallCallingState();
 
-  if (callingState !== CallingState.JOINED) return <Loader />;
+  if (callingState !== CallingState.JOINED)
+    return (
+      <div className="h-[100dvh] w-full">
+        <Loader />
+      </div>
+    );
 
   const CallLayout = () => {
     switch (layout) {
@@ -49,7 +54,7 @@ const MeetingRoom = () => {
   };
 
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden pt-4 text-white">
+    <section className="relative h-[100dvh] w-full overflow-hidden pt-5 text-white">
       <div className="relative flex size-full items-center justify-center">
         <div className="flex size-full max-w-5xl items-center">
           <CallLayout />
@@ -64,7 +69,7 @@ const MeetingRoom = () => {
       </div>
       {/* Video layout and Call controls */}
       <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap pb-4">
-        <CallControls onLeave={() => router.push(`/`)} />
+        <CallControls onLeave={() => router.push("/")} />
         <DropdownMenu>
           <div className="flex items-center">
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]  ">

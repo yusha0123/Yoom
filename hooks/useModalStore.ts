@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type modalType = "instant-meeting" | "schedule-meeting";
+type modalType = "instant-meeting" | "schedule-meeting" | "join-meeting";
 
 interface modalStore {
   type: modalType | null;
