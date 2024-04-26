@@ -41,7 +41,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={cn(inter.className, "bg-dark-2")}>
           {children}
-          <Toaster />
+          <Toaster position="top-center" />
         </body>
       </html>
     </ClerkProvider>

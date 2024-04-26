@@ -45,7 +45,7 @@ const InstantMeeting = () => {
 
   return (
     <Dialog open={isOpen && type === "instant-meeting"} onOpenChange={onClose}>
-      <DialogContent className="flex w-full max-w-lg flex-col gap-6 border-none bg-dark-1 px-6 py-9 text-white">
+      <DialogContent className="flex w-full max-w-lg flex-col gap-6 border-none bg-dark-1 px-6 py-9 text-white outline-none">
         <div className="flex flex-col gap-6">
           <h2 className="text-3xl font-bold leading-[42px] text-center">
             Start an Instant Meeting

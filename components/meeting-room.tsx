@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 import {
   CallControls,
   CallParticipantsList,
@@ -8,11 +9,16 @@ import {
   CallingState,
   PaginatedGridLayout,
   SpeakerLayout,
+  useCall,
   useCallStateHooks,
+  useStreamVideoClient,
 } from "@stream-io/video-react-sdk";
+import { LayoutList, Users } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import EndCallBtn from "./end-call-btn";
 import Loader from "./loader";
-import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +26,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Users, LayoutList } from "lucide-react";
-import EndCallBtn from "./end-call-btn";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -32,8 +36,23 @@ const MeetingRoom = () => {
   const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
-
+  const client = useStreamVideoClient();
+  const call = useCall();
+  const { user } = useUser();
   const callingState = useCallCallingState();
+
+  useEffect(() => {
+    const unsubscribe = client?.on("call.ended", () => {
+      if (call?.state.createdBy?.id !== user?.id) {
+        toast.info("The Meeting has been ended by the host!");
+        router.push("/");
+      }
+    });
+
+    return () => {
+      unsubscribe?.();
+    };
+  }, [client]);
 
   if (callingState !== CallingState.JOINED)
     return (
@@ -56,7 +75,7 @@ const MeetingRoom = () => {
   return (
     <section className="relative h-[100dvh] w-full overflow-hidden pt-5 text-white">
       <div className="relative flex size-full items-center justify-center">
-        <div className="flex size-full max-w-5xl items-center">
+        <div className="flex size-full max-w-5xl items-center px-2">
           <CallLayout />
         </div>
         <div
