@@ -3,12 +3,14 @@
 import {
   DeviceSettings,
   useCall,
+  useCallStateHooks,
   VideoPreview,
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
+import Alert from "./ui/alert";
 
 const MeetingSetup = ({
   setIsSetupComplete,
@@ -17,6 +19,13 @@ const MeetingSetup = ({
 }) => {
   const [isMicCamToggled, setisMicCamToggled] = useState(false);
   const call = useCall();
+
+  const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
+  const callStartsAt = useCallStartsAt();
+  const callEndedAt = useCallEndedAt();
+  const callTimeNotArrived =
+    callStartsAt && new Date(callStartsAt) > new Date();
+  const callHasEnded = !!callEndedAt;
 
   if (!call) {
     throw new Error(
@@ -33,6 +42,21 @@ const MeetingSetup = ({
       call?.microphone.enable();
     }
   }, [isMicCamToggled, call?.camera, call?.microphone]);
+
+  if (callTimeNotArrived)
+    return (
+      <Alert
+        title={`Your Meeting has not started yet. It is scheduled for ${callStartsAt.toLocaleString()}`}
+      />
+    );
+
+  if (callHasEnded)
+    return (
+      <Alert
+        title="The call has been ended by the host"
+        iconUrl="/icons/call-ended.svg"
+      />
+    );
 
   return (
     <div className="flex min-h-[100dvh] w-full flex-col items-center justify-center gap-3 text-white p-2">
