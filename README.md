@@ -1,4 +1,4 @@
- <h1 align="center">A Zoom Clone</h3>
+<h1 align="center">Yoom - A Video Conferencing Application</h1>
 
 ## 📋 <a name="table">Table of Contents</a>
 
@@ -7,20 +7,20 @@
 3. 🔋 [Features](#features)
 4. 🤸 [Quick Start](#quick-start)
 
-## <a name="introduction">🤖 Introduction</a>
+## <a name="introduction"></a>🤖 Introduction
 
 Built with the latest Next.js and TypeScript, this project replicates Zoom, a widely used video conferencing tool. It enables users to securely log in, create meetings and access various meeting functionalities such as recording, screen sharing, and managing participants.
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
+## <a name="tech-stack"></a>⚙️ Tech Stack
 
 - Next.js
 - TypeScript
 - Clerk
 - getstream
-- shadcn
+- Shadcn/ui
 - Tailwind CSS
 
-## <a name="features">🔋 Features</a>
+## <a name="features"></a>🔋 Features
 
 🔒 **Authentication**: Implements authentication and authorization features using Clerk, allowing users to securely log in via social sign-on or traditional email and password methods, while ensuring appropriate access levels and permissions within the platform.
 
@@ -46,7 +46,7 @@ Built with the latest Next.js and TypeScript, this project replicates Zoom, a wi
 
 and many more, including code architecture and reusability.
 
-## <a name="quick-start">🤸 Quick Start</a>
+## <a name="quick-start"></a>🤸 Quick Start
 
 Follow these steps to set up the project locally on your machine.
 
@@ -61,39 +61,6 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/yusha0123/Zoom-Clone.git
-cd zoom-clone
+git clone https://github.com/yusha0123/Yoom
+cd Yoom
 ```
-
-**Installation**
-
-Install the project dependencies using npm:
-
-```bash
-npm install
-```
-
-**Set Up Environment Variables**
-
-Create a new file named `.env` in the root of your project and add the following content:
-
-```env
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
-NEXT_PUBLIC_STREAM_API_KEY=
-STREAM_SECRET_KEY=
-```
-
-Replace the placeholder values with your actual Clerk & getstream credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/) and [getstream website](https://getstream.io/)
-
-**Running the Project**
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
