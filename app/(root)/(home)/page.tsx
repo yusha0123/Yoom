@@ -1,13 +1,17 @@
 import MeetingList from "@/components/meeting-list";
 import { currentUser } from "@clerk/nextjs/server";
-import { format } from "date-fns";
 
 const HomePage = async () => {
   const user = await currentUser();
   const now = new Date();
 
-  const time = format(now, "h:mm a");
-  const date = format(now, "EEEE, MMMM dd, yyyy");
+  const time = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const date = new Intl.DateTimeFormat("en-US", { dateStyle: "full" }).format(
+    now
+  );
 
   return (
     <section className="size-full flex flex-col gap-10 text-white">
